@@ -1,4 +1,4 @@
-Explay_A350_kernel_source_code
+Micromax_A57_kernel_source_code
 ==============================
   Linux kernel release 2.6.xx <http://kernel.org/>
 
