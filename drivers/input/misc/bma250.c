@@ -51,6 +51,7 @@
 #define SLOPE_Z_INDEX 			7
 #define BMA250_MAX_DELAY		200
 #define BMA250_CHIP_ID			3
+#define BMA222E_CHIP_ID			0xF8
 #define BMA250_RANGE_SET		0
 #define BMA250_BW_SET			4   //  2-> 31.25hz  16ms : // 4-> 125 hz. 4ms
 
@@ -1298,7 +1299,12 @@ static int bma250_probe(struct i2c_client *client,
 	if ((tempvalue&0x00FF) == BMA250_CHIP_ID) {
 		printk(KERN_INFO "Bosch Sensortec Device detected!\n" \
 				"BMA250 registered I2C driver!\n");
-	} else{
+	} else if ((tempvalue&0x00FF) == BMA222E_CHIP_ID) {
+		printk(KERN_INFO "Bosch Sensortec Device detected!\n" \
+				"BMA222E registered I2C driver!\n");
+        } 
+
+          else{
 		printk(KERN_INFO "Bosch Sensortec Device not found, \
 				i2c error %d \n", tempvalue);
 		err = -1;
@@ -1523,4 +1529,3 @@ MODULE_LICENSE("GPL");
 
 module_init(BMA250_init);
 module_exit(BMA250_exit);
-
