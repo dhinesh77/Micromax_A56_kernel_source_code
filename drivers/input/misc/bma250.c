@@ -574,32 +574,31 @@ static int bma250_read_accel_xyz(struct i2c_client *client,
 	if (client == NULL) {
 		comres = -1;
 	} else{
-		comres = bma2x2_smbus_read_byte_block(client,
-				BMA2X2_ACC_X8_LSB__REG, data, 6);
-		acc->x = BMA2X2_GET_BITSLICE(data[0], BMA2X2_ACC_X8_LSB)|
-			(BMA2X2_GET_BITSLICE(data[1],
-				BMA2X2_ACC_X_MSB)<<(BMA2X2_ACC_X8_LSB__LEN));
-		acc->x = acc->x << (sizeof(short)*8-(BMA2X2_ACC_X8_LSB__LEN +
-					BMA2X2_ACC_X_MSB__LEN));
-		acc->x = acc->x >> (sizeof(short)*8-(BMA2X2_ACC_X8_LSB__LEN +
-					BMA2X2_ACC_X_MSB__LEN));
+		comres = bma250_smbus_read_byte_block(client,
+				BMA250_ACC_X_LSB__REG, data, 6);
 
-		acc->y = BMA2X2_GET_BITSLICE(data[2], BMA2X2_ACC_Y8_LSB)|
-			(BMA2X2_GET_BITSLICE(data[3],
-				BMA2X2_ACC_Y_MSB)<<(BMA2X2_ACC_Y8_LSB__LEN
-									));
-		acc->y = acc->y << (sizeof(short)*8-(BMA2X2_ACC_Y8_LSB__LEN +
-					BMA2X2_ACC_Y_MSB__LEN));
-		acc->y = acc->y >> (sizeof(short)*8-(BMA2X2_ACC_Y8_LSB__LEN +
-					BMA2X2_ACC_Y_MSB__LEN));
+		acc->x = BMA250_GET_BITSLICE(data[0], BMA250_ACC_X_LSB)
+			|(BMA250_GET_BITSLICE(data[1],
+				BMA250_ACC_X_MSB)<<BMA250_ACC_X_LSB__LEN);
+		acc->x = acc->x << (sizeof(short)*8-(BMA250_ACC_X_LSB__LEN
+					+ BMA250_ACC_X_MSB__LEN));
+		acc->x = acc->x >> (sizeof(short)*8-(BMA250_ACC_X_LSB__LEN
+					+ BMA250_ACC_X_MSB__LEN));
+		acc->y = BMA250_GET_BITSLICE(data[2], BMA250_ACC_Y_LSB)
+			| (BMA250_GET_BITSLICE(data[3],
+				BMA250_ACC_Y_MSB)<<BMA250_ACC_Y_LSB__LEN);
+		acc->y = acc->y << (sizeof(short)*8-(BMA250_ACC_Y_LSB__LEN
+					+ BMA250_ACC_Y_MSB__LEN));
+		acc->y = acc->y >> (sizeof(short)*8-(BMA250_ACC_Y_LSB__LEN
+					+ BMA250_ACC_Y_MSB__LEN));
 
-		acc->z = BMA2X2_GET_BITSLICE(data[4], BMA2X2_ACC_Z8_LSB)|
-			(BMA2X2_GET_BITSLICE(data[5],
-				BMA2X2_ACC_Z_MSB)<<(BMA2X2_ACC_Z8_LSB__LEN));
-		acc->z = acc->z << (sizeof(short)*8-(BMA2X2_ACC_Z8_LSB__LEN +
-					BMA2X2_ACC_Z_MSB__LEN));
-		acc->z = acc->z >> (sizeof(short)*8-(BMA2X2_ACC_Z8_LSB__LEN +
-					BMA2X2_ACC_Z_MSB__LEN));
+		acc->z = BMA250_GET_BITSLICE(data[4], BMA250_ACC_Z_LSB)
+			| (BMA250_GET_BITSLICE(data[5],
+				BMA250_ACC_Z_MSB)<<BMA250_ACC_Z_LSB__LEN);
+		acc->z = acc->z << (sizeof(short)*8-(BMA250_ACC_Z_LSB__LEN
+					+ BMA250_ACC_Z_MSB__LEN));
+		acc->z = acc->z >> (sizeof(short)*8-(BMA250_ACC_Z_LSB__LEN
+					+ BMA250_ACC_Z_MSB__LEN));
 	}
 
 	return comres;
